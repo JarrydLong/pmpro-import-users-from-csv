@@ -181,7 +181,7 @@ function pmproiufcsv_is_iu_post_user_import($user_id)
 	if(!empty($membership_enddate))
 		$membership_enddate = date("Y-m-d", strtotime($membership_enddate, current_time('timestamp')));
 	else
-		$membership_enddate = "NULL";
+		$membership_enddate = "0000-00-00 00:00:00";
 	if(!empty($membership_timestamp))	
 		$membership_timestamp = date("Y-m-d", strtotime($membership_timestamp, current_time('timestamp')));
 	
@@ -211,7 +211,7 @@ function pmproiufcsv_is_iu_post_user_import($user_id)
 		pmpro_changeMembershipLevel($custom_level, $user_id);
 		
 		//if membership was in the past make it inactive
-		if($membership_status === "inactive" || (!empty($membership_enddate) && $membership_enddate !== "NULL" && strtotime($membership_enddate, current_time('timestamp')) < current_time('timestamp')))
+		if($membership_status === "inactive" || (!empty($membership_enddate) && $membership_enddate !== "NULL" && $membership_enddate !== "0000-00-00 00:00:00" && strtotime($membership_enddate, current_time('timestamp')) < current_time('timestamp')))
 		{			
 			$sqlQuery = "UPDATE $wpdb->pmpro_memberships_users SET status = 'inactive' WHERE user_id = '" . $user_id . "' AND membership_id = '" . $membership_id . "'";		
 			$wpdb->query($sqlQuery);
